@@ -13,6 +13,7 @@ pub struct ClusterCompressor {
 
 #[wasm_bindgen]
 impl ClusterCompressor {
+    #[wasm_bindgen(constructor)]
     pub fn new() -> ClusterCompressor {
         ClusterCompressor { clusters: vec![] }
     }
@@ -26,7 +27,14 @@ impl ClusterCompressor {
             previous_session_index = session_index;
             let capacity = u64::from_le_bytes(chunk[8..16].try_into().unwrap());
             let count = u64::from_le_bytes(chunk[16..24].try_into().unwrap());
-            decompressed_cluster.call3(&JsValue::NULL, &JsValue::from_f64(session_index as f64), &JsValue::from_f64(capacity as f64), &JsValue::from_f64(count as f64)).unwrap();
+            decompressed_cluster
+                .call3(
+                    &JsValue::NULL,
+                    &JsValue::from_f64(session_index as f64),
+                    &JsValue::from_f64(capacity as f64),
+                    &JsValue::from_f64(count as f64),
+                )
+                .unwrap();
         }
     }
 
@@ -38,11 +46,12 @@ impl ClusterCompressor {
         });
     }
 
-    pub fn compress(self) -> String {
+    pub fn compress(&self) -> String {
         let mut foo = vec![];
         let mut previous_session_index: u64 = 0;
-        for cluster in self.clusters {
-            let current_session_index_delta: i64 = cluster.session_index as i64 - previous_session_index as i64;
+        for cluster in &self.clusters {
+            let current_session_index_delta: i64 =
+                cluster.session_index as i64 - previous_session_index as i64;
             previous_session_index = cluster.session_index;
             foo.extend_from_slice(&current_session_index_delta.to_le_bytes());
             foo.extend_from_slice(&cluster.capacity.to_le_bytes());
