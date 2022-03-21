@@ -1,10 +1,10 @@
 [package]
 name = "uuid-cluster"
 version = "0.1.0"
-authors = ["Your Name <you@example.com>"]
-description = "A sample project with wasm-pack"
+authors = ["Noah Encke <noencke@microsoft.com>"]
+description = "UUID cluser handling utilities"
 license = "MIT/Apache-2.0"
-repository = "https://github.com/yourgithubusername/hello-wasm"
+repository = "https://github.com/noencke/uuid-cluster"
 edition = "2021"
 
 [lib]
