@@ -55,7 +55,7 @@ impl ClusterCompressor {
             foo.extend_from_slice(&cluster.capacity.to_le_bytes());
             foo.extend_from_slice(&cluster.count.to_le_bytes());
         }
-        let mut encoder = flate2::write::GzEncoder::new(Vec::new(), Compression::default());
+        let mut encoder = flate2::write::DeflateEncoder::new(Vec::new(), Compression::default());
         encoder.write_all(&foo).unwrap();
         base64::encode(encoder.finish().unwrap())
     }
@@ -67,7 +67,7 @@ impl ClusterCompressor {
         mut decompressed_cluster: T,
     ) {
         let decompressed_bytes = base64::decode(compressed).unwrap();
-        let mut decoder = flate2::read::GzDecoder::new(decompressed_bytes.as_slice());
+        let mut decoder = flate2::read::DeflateDecoder::new(decompressed_bytes.as_slice());
         let mut bytes = Vec::new();
         decoder.read_to_end(&mut bytes).unwrap();
         let mut previous_session_index: u64 = 0;
@@ -173,6 +173,8 @@ mod tests {
         let mut cc2 = ClusterCompressor::new();
         ClusterCompressor::decompress_rust(x.clone(), |cluster| cc2.add_rust(cluster));
 
-        assert_eq!(cc2.compress(), x);
+        assert_eq!(&cc2.compress(), &x);
+
+        assert_eq!(x.len(), 0);
     }
 }
