@@ -1,0 +1,34 @@
+83585
+
+
+flate2:
+wasm file 78227
+bundle.js 41.9 kb
+wasm: 33.06 kb
+
+
+zstd:
+wasm file 586015
+
+brotli:
+wasm file 1281652
+
+
+flate2 again:
+78346
+
+
+78378
+byte_order:
+78501 (both)
+just decompress: 78474
+
+
+no compression:
+wasm file  34233
+bundle.js 41.9 kb
+wasm: 15.48 kb
+
+flate2 again:
+78175
+78147 - with panic abort
