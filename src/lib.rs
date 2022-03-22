@@ -174,7 +174,5 @@ mod tests {
         ClusterCompressor::decompress_rust(x.clone(), |cluster| cc2.add_rust(cluster));
 
         assert_eq!(&cc2.compress(), &x);
-
-        assert_eq!(x.len(), 0);
     }
 }
