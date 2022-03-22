@@ -1,18 +1,9 @@
 const path = require('path');
-// module.exports = {
-//   entry: "./src/test.ts",
-//   output: {
-//     path: path.resolve(__dirname, "webpack_dist"),
-//     filename: "index.js",
-//   },
-//   mode: "development"
-// };
 
-// const path = require('path');
-
-// https://webpack.js.org/guides/typescript/
+// Based on https://webpack.js.org/guides/typescript/
 module.exports = {
   entry: './src/test.ts',
+  // devtool: false,
   module: {
     rules: [
       {
