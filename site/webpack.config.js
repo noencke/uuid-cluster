@@ -28,8 +28,8 @@ module.exports = {
     // layers: true,
     // lazyCompilation: true,
     // outputModule: true,
-    syncWebAssembly: true,
-    topLevelAwait: true,
+    // syncWebAssembly: true,
+    // topLevelAwait: true,
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
