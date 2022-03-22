@@ -68,7 +68,8 @@ impl ClusterCompressor {
         });
     }
 
-    pub fn compress(&self) -> String {
+    /// Level should be integer from 0-9 (inclusive). Default 6.
+    pub fn compress(&self, level: u32) -> String {
         let mut uncompressed = vec![];
         let mut previous_session_index: u64 = 0;
         for cluster in &self.clusters {
@@ -79,7 +80,8 @@ impl ClusterCompressor {
             uncompressed.extend_from_slice(&cluster.capacity.to_le_bytes());
             uncompressed.extend_from_slice(&cluster.count.to_le_bytes());
         }
-        let mut compressor = flate2::write::DeflateEncoder::new(Vec::new(), Compression::default());
+        let mut compressor =
+            flate2::write::DeflateEncoder::new(Vec::new(), Compression::new(level));
         compressor.write_all(&uncompressed).unwrap();
         base64::encode(compressor.finish().unwrap())
     }
@@ -192,11 +194,11 @@ mod tests {
         for c in data {
             cc.add_rust(*c)
         }
-        let x = cc.compress();
+        let x = cc.compress(6);
 
         let mut cc2 = ClusterCompressor::new();
         ClusterCompressor::decompress_rust(x.clone(), |cluster| cc2.add_rust(cluster));
 
-        assert_eq!(&cc2.compress(), &x);
+        assert_eq!(&cc2.compress(6), &x);
     }
 }

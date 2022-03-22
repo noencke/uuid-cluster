@@ -5,7 +5,7 @@ export {};
 // import("uuid-cluster").then((uuid_cluster) => {
 const compressor = new uuid_cluster.ClusterCompressor();
 compressor.add(0, 0, 0);
-const compressed = compressor.compress();
+const compressed = compressor.compress(6);
 compressor.free();
 console.warn(compressed);
 // });
