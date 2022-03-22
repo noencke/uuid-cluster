@@ -1,3 +1,6 @@
+// Ignore link from wasm_bindgen: https://github.com/rustwasm/wasm-bindgen/issues/2774
+#![allow(clippy::unused_unit)]
+
 use std::io::Read;
 use std::io::Write;
 
@@ -9,22 +12,16 @@ use wasm_bindgen::prelude::*;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
+/// Setup `console_error_panic_hook` for more friendly panic handling in debug builds.
+#[cfg(all(debug_assertions, feature = "console_error_panic_hook"))]
 #[wasm_bindgen]
 pub fn setup() {
-    #[cfg(debug_assertions)]
-    {
-        set_panic_hook();
-    }
-}
-
-pub fn set_panic_hook() {
     // When the `console_error_panic_hook` feature is enabled, we can call the
     // `set_panic_hook` function at least once during initialization, and then
     // we will get better error messages if our code ever panics.
     //
     // For more details see
     // https://github.com/rustwasm/console_error_panic_hook#readme
-    #[cfg(feature = "console_error_panic_hook")]
     console_error_panic_hook::set_once();
 }
 
@@ -36,6 +33,7 @@ pub(crate) struct CompressedCluster {
 }
 
 #[wasm_bindgen]
+#[derive(Default)]
 pub struct ClusterCompressor {
     clusters: Vec<CompressedCluster>,
 }
@@ -43,7 +41,7 @@ pub struct ClusterCompressor {
 #[wasm_bindgen]
 impl ClusterCompressor {
     #[wasm_bindgen(constructor)]
-    pub fn new() -> ClusterCompressor {
+    pub fn new() -> Self {
         ClusterCompressor { clusters: vec![] }
     }
 
@@ -68,7 +66,7 @@ impl ClusterCompressor {
         });
     }
 
-    /// Level should be integer from 0-9 (inclusive). Default 6.
+    /// Level is deflate compression level. Should be integer from 0-9 (inclusive). Default 6.
     pub fn compress(&self, level: u32) -> String {
         let mut uncompressed = vec![];
         let mut previous_session_index: u64 = 0;
@@ -90,7 +88,7 @@ impl ClusterCompressor {
 impl ClusterCompressor {
     pub(crate) fn decompress_rust<T: FnMut(CompressedCluster)>(
         compressed: String,
-        mut decompressed_cluster: T,
+        mut call_back: T,
     ) {
         let compressed_bytes = base64::decode(compressed).unwrap();
         let mut decompressor = flate2::read::DeflateDecoder::new(compressed_bytes.as_slice());
@@ -103,7 +101,7 @@ impl ClusterCompressor {
             previous_session_index = session_index;
             let capacity = u64::from_le_bytes(chunk[8..16].try_into().unwrap());
             let count = u64::from_le_bytes(chunk[16..24].try_into().unwrap());
-            decompressed_cluster(CompressedCluster {
+            call_back(CompressedCluster {
                 session_index,
                 capacity,
                 count,
