@@ -2,7 +2,7 @@
   "scripts": {
     "serve": "webpack-dev-server",
     "webpack": "webpack",
-    "test:ts-node": "ts-mocha ./src/test.ts",
+    "test:ts-node": "ts-mocha --project \"tsconfig-node.json\" ./src/test.ts",
     "test:node": "node ./src/test.js",
     "build": "wasm-pack build --target bundler --out-dir pkg_combo/bundler && wasm-pack build --target nodejs --out-dir pkg_combo/nodejs && npm i && tsc --project \"tsconfig-node.json\" && webpack"
   },
