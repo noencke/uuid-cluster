@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "gilescope.rust-in-peace"
+        "gilescope.rust-in-peace",
+        "bodil.prettier-toml"
     ]
 }
