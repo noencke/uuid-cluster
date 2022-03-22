@@ -6,6 +6,13 @@ Setup Rust, wasm-pack and NodeJS as directed in https://developer.mozilla.org/en
 
 run:
 
-1. `wasm-pack build --target bundler`
-2. `cd ./site`
-3. `npm run serve`
+1. `cargo test`
+1. `cd ./site`
+1. `npm run build`
+1. `npm run test:ts-node`
+1. `npm run test:node`
+1. `npm run serve`
+
+Issues:
+https://github.com/microsoft/TypeScript/issues/46452
+https://github.com/rustwasm/wasm-pack/issues/1039
