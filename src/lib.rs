@@ -4,6 +4,8 @@
 use std::io::Read;
 use std::io::Write;
 
+use byteorder::ByteOrder;
+use byteorder::LittleEndian;
 use flate2::Compression;
 use wasm_bindgen::prelude::*;
 
@@ -68,7 +70,7 @@ impl ClusterCompressor {
 
     /// Level is deflate compression level. Should be integer from 0-9 (inclusive). Default 6.
     pub fn compress(&self, level: u32) -> String {
-        let mut uncompressed = vec![];
+        let mut uncompressed = Vec::with_capacity(self.clusters.len() * 24);
         let mut previous_session_index: u64 = 0;
         for cluster in &self.clusters {
             let current_session_index_delta: i64 =
@@ -96,11 +98,11 @@ impl ClusterCompressor {
         decompressor.read_to_end(&mut bytes).unwrap();
         let mut previous_session_index: u64 = 0;
         for chunk in bytes.chunks(24) {
-            let session_index_delta = i64::from_le_bytes(chunk[0..8].try_into().unwrap());
+            let session_index_delta = LittleEndian::read_i64(chunk);
             let session_index: u64 = previous_session_index + session_index_delta as u64;
             previous_session_index = session_index;
-            let capacity = u64::from_le_bytes(chunk[8..16].try_into().unwrap());
-            let count = u64::from_le_bytes(chunk[16..24].try_into().unwrap());
+            let capacity = LittleEndian::read_u64(&chunk[8..16]);
+            let count = LittleEndian::read_u64(&chunk[16..24]);
             call_back(CompressedCluster {
                 session_index,
                 capacity,
