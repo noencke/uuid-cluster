@@ -1,7 +1,3 @@
-use std::io::Read;
-use std::io::Write;
-
-use flate2::Compression;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global allocator.
@@ -79,9 +75,10 @@ impl ClusterCompressor {
             foo.extend_from_slice(&cluster.capacity.to_le_bytes());
             foo.extend_from_slice(&cluster.count.to_le_bytes());
         }
-        let mut encoder = flate2::write::DeflateEncoder::new(Vec::new(), Compression::default());
-        encoder.write_all(&foo).unwrap();
-        base64::encode(encoder.finish().unwrap())
+        let mut dst = Vec::new();
+        zstd::stream::copy_encode(foo.as_slice(), &mut dst, zstd::DEFAULT_COMPRESSION_LEVEL)
+            .unwrap();
+        base64::encode(dst)
     }
 }
 
@@ -91,9 +88,8 @@ impl ClusterCompressor {
         mut decompressed_cluster: T,
     ) {
         let decompressed_bytes = base64::decode(compressed).unwrap();
-        let mut decoder = flate2::read::DeflateDecoder::new(decompressed_bytes.as_slice());
         let mut bytes = Vec::new();
-        decoder.read_to_end(&mut bytes).unwrap();
+        zstd::stream::copy_decode(decompressed_bytes.as_slice(), &mut bytes).unwrap();
         let mut previous_session_index: u64 = 0;
         for chunk in bytes.chunks(24) {
             let session_index_delta = i64::from_le_bytes(chunk[0..8].try_into().unwrap());
