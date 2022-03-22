@@ -38,5 +38,5 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'webpack_dist'),
   },
-  mode: "development"
+  mode: "production"
 };
