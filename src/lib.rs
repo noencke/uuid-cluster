@@ -118,11 +118,8 @@ impl ClusterCompressor {
 
 pub(crate) fn validate_number(number: f64) -> u64 {
     let result = number as u64;
-    if result as f64 != number {
+    if result as f64 != number || result >= 1 << 53 {
         panic!("expected convertible integer")
-    }
-    if result >= 1 << 53 {
-        panic!("number larger than javascript max safe integer")
     }
     result
 }
