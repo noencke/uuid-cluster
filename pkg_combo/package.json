@@ -11,12 +11,12 @@
     "url": "https://github.com/noencke/uuid-cluster"
   },
   "files": [
-    "nodejs/uuid_cluster_bg.wasm",
-    "nodejs/uuid_cluster.js",
-    "nodejs/uuid_cluster.d.ts",
-    "bundler/uuid_cluster_bg.wasm",
-    "bundler/uuid_cluster.js",
-    "bundler/uuid_cluster_bg.js"
+    "/nodejs/uuid_cluster_bg.wasm",
+    "/nodejs/uuid_cluster.js",
+    "/nodejs/uuid_cluster.d.ts",
+    "/bundler/uuid_cluster_bg.wasm",
+    "/bundler/uuid_cluster.js",
+    "/bundler/uuid_cluster_bg.js"
   ],
   "main": "./nodejs/uuid_cluster.js",
   "types": "./nodejs/uuid_cluster.d.ts",
