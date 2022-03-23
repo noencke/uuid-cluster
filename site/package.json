@@ -4,7 +4,9 @@
     "webpack": "webpack",
     "test:ts-node": "ts-mocha --project \"tsconfig-node.json\" ./src/test.ts",
     "test:node": "node ./src/test.js",
-    "build": "wasm-pack build --target bundler --out-dir pkg_combo/bundler && wasm-pack build --target nodejs --out-dir pkg_combo/nodejs && npm i && tsc --project \"tsconfig-node.json\" && webpack"
+    "build": "npm run build:wasm && npm run cleanup && npm i && tsc --project \"tsconfig-node.json\" && webpack && npm run cleanup",
+    "build:wasm": "wasm-pack build --target bundler --out-dir pkg_combo/bundler && wasm-pack build --target nodejs --out-dir pkg_combo/nodejs",
+    "cleanup": "rimraf ../pkg_combo/*/package.json"
   },
   "dependencies": {
     "uuid-cluster": "file:../pkg_combo"
@@ -13,6 +15,7 @@
     "@types/expect": "^24.3.0",
     "@types/mocha": "^9.1.0",
     "mocha": "^9.2.2",
+    "rimraf": "^3.0.2",
     "ts-loader": "^9.2.8",
     "ts-mocha": "^9.0.2",
     "typescript": "^4.6.2",
