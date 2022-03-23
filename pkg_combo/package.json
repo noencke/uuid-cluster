@@ -4,19 +4,19 @@
     "Noah Encke <noencke@microsoft.com>"
   ],
   "description": "UUID cluster handling utilities",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT/Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/noencke/uuid-cluster"
   },
   "files": [
-    "./nodejs/uuid_cluster_bg.wasm",
-    "./nodejs/uuid_cluster.js",
-    "./nodejs/uuid_cluster.d.ts",
-    "./bundler/uuid_cluster_bg.wasm",
-    "./bundler/uuid_cluster.js",
-    "./bundler/uuid_cluster_bg.js"
+    "nodejs/uuid_cluster_bg.wasm",
+    "nodejs/uuid_cluster.js",
+    "nodejs/uuid_cluster.d.ts",
+    "bundler/uuid_cluster_bg.wasm",
+    "bundler/uuid_cluster.js",
+    "bundler/uuid_cluster_bg.js"
   ],
   "main": "./nodejs/uuid_cluster.js",
   "types": "./nodejs/uuid_cluster.d.ts",
