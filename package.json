@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "serve": "wasm-pack build --target bundler && npm i && webpack-dev-server"
+    "serve": "wasm-pack build --debug --target bundler && npm i && webpack-dev-server"
   },
   "dependencies": {
     "uuid-cluster": "file:./pkg"
