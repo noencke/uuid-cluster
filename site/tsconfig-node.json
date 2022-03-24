@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "ES2015",
-        "module": "CommonJs",
+        "target": "es2017",
+        "module": "CommonJS",
         "moduleResolution": "node",
         "strict": true,
         "esModuleInterop": true,

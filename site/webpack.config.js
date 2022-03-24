@@ -13,8 +13,10 @@ module.exports = {
       },
     ],
   },
+  "devtool": false,
   experiments: {
-    asyncWebAssembly: true,
+    // asyncWebAssembly: true,
+    futureDefaults: true,
     // buildHttp: true,
     // layers: true,
     // lazyCompilation: true,
@@ -29,5 +31,5 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'webpack_dist'),
   },
-  mode: "production"
+  mode: "development"
 };

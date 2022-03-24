@@ -1,11 +1,15 @@
-import * as uuid_cluster from "uuid-cluster";
-// const uuid_cluster = await import("uuid-cluster");
-export {};
+async function doLoop(): Promise<void> {
+  const uuid_cluster = await import("uuid-cluster");
+  const compressor = new uuid_cluster.ClusterCompressor();
+  compressor.add(0, 0, 0);
+  for (let i = 1; i <= 5000; i++) {
+    const thingy = compressor.compress(6);
 
-// import("uuid-cluster").then((uuid_cluster) => {
-const compressor = new uuid_cluster.ClusterCompressor();
-compressor.add(0, 0, 0);
-const compressed = compressor.compress(6);
-compressor.free();
-console.warn(compressed);
-// });
+    if (i % 1000 === 0) {
+      console.warn(i);
+    }
+  }
+  compressor.free();
+}
+
+(window as any)["doLoop"] = doLoop;
