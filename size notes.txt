@@ -32,3 +32,10 @@ wasm: 15.48 kb
 flate2 again:
 78175
 78147 - with panic abort
+
+
+
+watch "wasm-pack build --target bundler && wc -c ../pkg/uuid_cluster_bg.wasm"
+
+miniz_oxide directly:
+66864

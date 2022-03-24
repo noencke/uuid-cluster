@@ -1,12 +1,10 @@
 // Ignore link from wasm_bindgen: https://github.com/rustwasm/wasm-bindgen/issues/2774
 #![allow(clippy::unused_unit)]
 
-use std::io::Read;
-use std::io::Write;
-
 use byteorder::ByteOrder;
 use byteorder::LittleEndian;
-use flate2::Compression;
+use miniz_oxide::deflate::compress_to_vec;
+use miniz_oxide::inflate::decompress_to_vec;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global allocator.
@@ -69,7 +67,7 @@ impl ClusterCompressor {
     }
 
     /// Level is deflate compression level. Should be integer from 0-9 (inclusive). Default 6.
-    pub fn compress(&self, level: u32) -> String {
+    pub fn compress(&self, level: u8) -> String {
         let mut uncompressed = Vec::with_capacity(self.clusters.len() * 24);
         let mut previous_session_index: u64 = 0;
         for cluster in &self.clusters {
@@ -80,10 +78,8 @@ impl ClusterCompressor {
             uncompressed.extend_from_slice(&cluster.capacity.to_le_bytes());
             uncompressed.extend_from_slice(&cluster.count.to_le_bytes());
         }
-        let mut compressor =
-            flate2::write::DeflateEncoder::new(Vec::new(), Compression::new(level));
-        compressor.write_all(&uncompressed).unwrap();
-        base64::encode(compressor.finish().unwrap())
+
+        base64::encode(compress_to_vec(uncompressed.as_slice(), level))
     }
 }
 
@@ -93,9 +89,7 @@ impl ClusterCompressor {
         mut call_back: T,
     ) {
         let compressed_bytes = base64::decode(compressed).unwrap();
-        let mut decompressor = flate2::read::DeflateDecoder::new(compressed_bytes.as_slice());
-        let mut bytes = Vec::new();
-        decompressor.read_to_end(&mut bytes).unwrap();
+        let bytes = decompress_to_vec(compressed_bytes.as_slice()).unwrap();
         let mut previous_session_index: u64 = 0;
         for chunk in bytes.chunks(24) {
             let session_index_delta = LittleEndian::read_i64(chunk);

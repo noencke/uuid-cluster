@@ -4,7 +4,7 @@
     "webpack": "webpack",
     "test:ts-node": "ts-mocha --project \"tsconfig-node.json\" ./src/test.ts",
     "test:node": "node ./src/test.js",
-    "build": "npm run build:wasm && npm run cleanup && npm i && tsc --project \"tsconfig-node.json\" && webpack && npm run cleanup",
+    "build": "npm run build:wasm && npm i && npm run cleanup && tsc --project \"tsconfig-node.json\" && webpack && npm run cleanup",
     "build:wasm": "wasm-pack build --target bundler --out-dir pkg_combo/bundler && wasm-pack build --target nodejs --out-dir pkg_combo/nodejs",
     "cleanup": "rimraf ../pkg_combo/*/package.json && rimraf ../pkg_combo/*/.gitignore"
   },

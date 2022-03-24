@@ -14,7 +14,7 @@ crate-type = ["cdylib"]
 wasm-bindgen = "0.2"
 js-sys = "0.3"
 base64 = "0.13"
-flate2 = "1.0"
+miniz_oxide = "0.5.1"
 byteorder = "1"
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
