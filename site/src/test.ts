@@ -21,4 +21,14 @@ async function doLoop(): Promise<void> {
   console.warn("done");
 }
 
-(window as any)["doLoop"] = doLoop;
+if (typeof window !== "undefined") {
+  (window as any)["doLoop"] = doLoop;
+} else {
+  it("basic", () => {
+    const compressor = new uuid_cluster.ClusterCompressor();
+    compressor.add(0, 0, 0);
+    const compressed = compressor.compress(6);
+    compressor.free();
+    console.warn(compressed);
+  });
+}
