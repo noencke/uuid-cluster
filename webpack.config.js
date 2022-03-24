@@ -2,8 +2,8 @@ const path = require('path');
 
 // Based on https://webpack.js.org/guides/typescript/
 module.exports = {
-  entry: './src/test.ts',
-  // devtool: false,
+  entry: './test.ts',
+  devtool: false,
   module: {
     rules: [
       {
@@ -13,16 +13,8 @@ module.exports = {
       },
     ],
   },
-  "devtool": false,
   experiments: {
-    // asyncWebAssembly: true,
-    futureDefaults: true,
-    // buildHttp: true,
-    // layers: true,
-    // lazyCompilation: true,
-    // outputModule: true,
-    // syncWebAssembly: true,
-    // topLevelAwait: true,
+    asyncWebAssembly: true,
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],

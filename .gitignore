@@ -1,7 +1,4 @@
 /target
-Cargo.lock
 pkg
-site/node_modules
-site/dist
-site/src/test.js
-site/webpack_dist
+node_modules
+webpack_dist
