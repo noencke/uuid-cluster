@@ -39,3 +39,7 @@ watch "wasm-pack build --target bundler && wc -c ../pkg/uuid_cluster_bg.wasm"
 
 miniz_oxide directly:
 66864
+
+
+without wee_alloc:
+72267

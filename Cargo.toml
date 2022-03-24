@@ -1,6 +1,6 @@
 [package]
 name = "uuid-cluster"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Noah Encke <noencke@microsoft.com>"]
 description = "UUID cluster handling utilities"
 license = "MIT/Apache-2.0"
@@ -38,4 +38,5 @@ panic = "abort"
 wasm-opt = ["-Oz", "--enable-mutable-globals"]
 
 [features]
-default = ["wee_alloc"] #"console_error_panic_hook"
+# due to memory leak with wee_alloc (see: https://github.com/rustwasm/wee_alloc/issues/106), don't enable it.
+default = [] # ["wee_alloc"] #"console_error_panic_hook"
